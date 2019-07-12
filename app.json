@@ -24,7 +24,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+        "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to scan barcodes on event tickets.",
+        "NSAppTransportSecurity" : "Allow internet",
+        "NSAllowsArbitraryLoads" : "Allow internet",
+        "NSExceptionDomains" : "allow internet",
+        "NSExceptionAllowsInsecureHTTPLoads" : "allow internet",
+        "NSIncludesSubdomains" : "allow interet"
+      }
     }
   }
 }
+

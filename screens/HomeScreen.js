@@ -1,15 +1,14 @@
 import * as WebBrowser from 'expo-web-browser';
-import { ImagePicker } from 'expo';
+import * as ImagePicker from 'expo-image-picker';
 import { Formik } from 'formik';
 import { Button, TextInput } from 'react-native-paper';
 import * as React from 'react';
 import { Alert, Keyboard, Image, View, StyleSheet } from 'react-native';
-//import React from react-native;
-import {Permissions} from 'expo';
+import * as Permissions from 'expo-permissions';
 
 
 const initialValues = {
-  title: '',
+  /*title: '',*/
   image: ''
 }
 
@@ -19,11 +18,81 @@ export default function HomeScreen() {
     await Permissions.askAsync(Permissions.CAMERA);
     await Permissions.askAsync(Permissions.CAMERA_ROLL);
   };
+
+  /*async function takeAndUploadPhotoAsync() {
+    // Display the camera to the user and wait for them to take a photo or to cancel
+    // the action
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+  
+    if (result.cancelled) {
+      return;
+    }
+  
+    // ImagePicker saves the taken photo to disk and returns a local URI to it
+    let localUri = result.uri;
+    let filename = localUri.split('/').pop();
+  
+    // Infer the type of the image
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+  
+    // Upload the image using the fetch and FormData APIs
+    let formData = new FormData();
+    // Assume "photo" is the name of the form field the server expects
+    formData.append('photo', { uri: localUri, name: filename, type: type});
+    
+    
+  
+     fetch("http://dezi-clean.me/api/FileUploading/UploadFile", {
+      method: 'POST',
+      body: formData,
+      header: {
+        'content-type': 'multipart/form-data',
+        
+      },
+      
+    }).catch(error => console.log(error))
+  } */
+
+
   function onSubmit(values){
-       //List of form values
-       console.log(values);
-       Alert.alert(JSON.stringify(values));
-       Keyboard.dismiss();
+// ImagePicker saves the taken photo to disk and returns a local URI to it
+
+console.log("seba",values);
+console.log("seba1",image);
+var index = [];
+
+// build the index
+for (var x in values) {
+   index.push(x);
+}
+//console.log("seba1",values[index[1]]);
+let localUri = values[index[0]];
+let filename = localUri.split('/').pop();
+
+// Infer the type of the image
+let match = /\.(\w+)$/.exec(filename);
+let type = match ? `image/${match[1]}` : `image`;
+
+// Upload the image using the fetch and FormData APIs
+let formData = new FormData();
+// Assume "photo" is the name of the form field the server expects
+formData.append('photo', { uri: localUri, name: filename, type: type});
+
+
+
+ fetch("http://dezi-clean.me/api/FileUploading/UploadFile", {
+  method: 'POST',
+  body: formData,
+  header: {
+    'content-type': 'multipart/form-data',
+    
+  },
+  
+}).catch(error => console.log(error))
   }
 
   async function _pickImage(handleChange) {
@@ -32,6 +101,8 @@ export default function HomeScreen() {
       allowsEditing: true,
       aspect: [4, 3]
     })
+
+    
     console.log(result)
     if (!result.cancelled) {
       handleChange(result.uri)

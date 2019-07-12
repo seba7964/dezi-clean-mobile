@@ -8,13 +8,16 @@ import { Ionicons } from '@expo/vector-icons';
 import AppNavigator from './navigation/AppNavigator';
 
 export default function App(props) {
+
+  
+  
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
       <AppLoading
         startAsync={loadResourcesAsync}
-        onError={handleLoadingError}
+        //onError={handleLoadingError}
         onFinish={() => handleFinishLoading(setLoadingComplete)}
       />
     );
@@ -44,11 +47,11 @@ async function loadResourcesAsync() {
   ]);
 }
 
-function handleLoadingError(error: Error) {
+/*function handleLoadingError(error: Error) {
   // In this case, you might want to report the error to your error reporting
   // service, for example Sentry
   console.warn(error);
-}
+} */
 
 function handleFinishLoading(setLoadingComplete) {
   setLoadingComplete(true);
@@ -60,3 +63,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
+
+
