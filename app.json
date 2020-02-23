@@ -26,6 +26,7 @@
     "ios": {
       "supportsTablet": true,
         "infoPlist": {
+        "NSLocationAlwaysUsageDescription": "Allow location",
         "NSCameraUsageDescription": "This app uses the camera to scan barcodes on event tickets.",
         "NSAppTransportSecurity" : "Allow internet",
         "NSAllowsArbitraryLoads" : "Allow internet",

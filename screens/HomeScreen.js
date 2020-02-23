@@ -3,7 +3,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Formik } from 'formik';
 import { Button, TextInput } from 'react-native-paper';
 import * as React from 'react';
-import { Alert, Keyboard, Image, View, StyleSheet, ImageBackground, Text } from 'react-native';
+import { Alert, Keyboard, Image, View, StyleSheet, ImageBackground, Text , TouchableOpacity } from 'react-native';
 import { Header } from 'react-native-elements';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -11,9 +11,9 @@ import * as Permissions from 'expo-permissions';
 
 const initialValues = {
   //ime: '',
-  image: ''
+  image: '',
+  location: ''
 }
-
 
 export default function HomeScreen() {
   askPermissionsAsyncCamera = async () => {
@@ -22,68 +22,26 @@ export default function HomeScreen() {
     await Permissions.askAsync(Permissions.LOCATION);
   };
 
-
-
-  /*async function takeAndUploadPhotoAsync() {
-    // Display the camera to the user and wait for them to take a photo or to cancel
-    // the action
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-  
-    if (result.cancelled) {
-      return;
-    }
-  
-    // ImagePicker saves the taken photo to disk and returns a local URI to it
-    let localUri = result.uri;
-    let filename = localUri.split('/').pop();
-  
-    // Infer the type of the image
-    let match = /\.(\w+)$/.exec(filename);
-    let type = match ? `image/${match[1]}` : `image`;
-  
-    // Upload the image using the fetch and FormData APIs
-    let formData = new FormData();
-    // Assume "photo" is the name of the form field the server expects
-    formData.append('photo', { uri: localUri, name: filename, type: type});
-    
-    
-  
-     fetch("http://dezi-clean.me/api/FileUploading/UploadFile", {
-      method: 'POST',
-      body: formData,
-      header: {
-        'content-type': 'multipart/form-data',
-        
-      },
-      
-    }).catch(error => console.log(error))
+  /*
+  state = {
+    location: '123',
+    //errorMessage: ''
   } */
-
-
-  function onSubmit(values){
-// ImagePicker saves the taken photo to disk and returns a local URI to it
-
-//console.log("seba",values);
-//console.log("seba1",image);
-debugger;
-//TODO
-/*_getLocationAsync();*/
-
-//var seba1 = this.setState.location.latitude.toString();
-//var seba = locationResult.location;
-var index = [];
+  
+function onSubmit(values){
+  var index = [];
 
 // build the index
 for (var x in values) {
    index.push(x);
 }
-//console.log("seba1",values[index[1]]);
 let localUri = values[index[0]];
+let lokacijajson = values[index[1]];
 let filename = localUri.split('/').pop();
 
+let lokacija = JSON.parse(lokacijajson);
+var latitude = lokacija.coords.latitude;
+var longitude = lokacija.coords.longitude;
 // Infer the type of the image
 let match = /\.(\w+)$/.exec(filename);
 let type = match ? `image/${match[1]}` : `image`;
@@ -93,14 +51,12 @@ let formData = new FormData();
 // Assume "photo" is the name of the form field the server expects
 formData.append('photo', { uri: localUri, name: filename, type: type});
 formData.append('ime', values.ime);
-formData.append('latitude', '345345345345345');
-formData.append('longitude', '34535345');
+formData.append('latitude', latitude);
+formData.append('longitude', longitude);
 formData.append('prezime', values.prezime);
 formData.append('opis', values.opis);
 
-
-
- fetch("http://74378608.ngrok.io/api/FileUploading/UploadFile", {
+ fetch("https://896c3c2a.ngrok.io/api/FileUploading/UploadFile", {
   method: 'POST',
   body: formData,
   header: {
@@ -132,24 +88,45 @@ formData.append('opis', values.opis);
       aspect: [4, 3],
       base64: false,
     });
-    this.setState({ result });
-  };
-//TODO
-  /*_getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== 'granted') {
-      this.setState({
-        locationResult: 'Permission to access location was denied',
-        location,
-      });
-    }
- 
-    let location = await Location.getCurrentPositionAsync({});
-    this.setState({ locationResult: JSON.stringify(location), location, });
-  };*/
-  return (
+    this.setState({ result }); 
+  }; 
 
+  _getLocation = async () => {
+    const {status} = await Permissions.askAsync(Permissions.LOCATION);
+
+    if(status !== 'granted') {
+      console.log('PERMISSION NOT GRANTED!');
+    }
+    const location = await Location.getCurrentPositionAsync({});
+    //this.setState({  location, });
+    return location;
+};
+
+/*findCoordinates = async () => {
+  debugger;
+ await this.navigator.geolocation.getCurrentPosition(
     
+    position => {
+      debugger;
+      const location = JSON.stringify(position);
+
+      setState({ location });
+    },
+    error => Alert.alert(error.message),
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+  );
+}; */
+
+async function findCoordinates (handleChange) {
+  await this.navigator.geolocation.getCurrentPosition(
+  position => {
+    const location = JSON.stringify(position);
+    handleChange(location);
+  }
+  )};
+
+
+  return (
     
     <View style={[styles.container]}>
       <Header
@@ -165,7 +142,7 @@ formData.append('opis', values.opis);
           resizeMode={'stretch'} // or cover
           style={{flex: 1,width:'100%',height:'100%'}} // must be passed from the parent, the number may vary depending upon your screen size
           source={require('../assets/images/EQSm0O-WkAAbCfe.jpg')}
-        >
+        >  
         <Formik 
           initialValues={initialValues} 
           onSubmit={onSubmit.bind(this)}>
@@ -194,10 +171,9 @@ formData.append('opis', values.opis);
                 label="Opišite problem"
                 placeholder="npr. Ovo je mjesto zagađenja"
               />
-              
               <Button
                 icon="add-a-photo" mode="contained" style={styles.button}
-                onPress={() => {_pickImage(handleChange('image'))}}
+                onPress={() => {_pickImage(handleChange('image')), findCoordinates(handleChange('location'))}}
               >Odaberi sliku</Button>
               
               {values.image && values.image.length > 0 ?
@@ -208,10 +184,11 @@ formData.append('opis', values.opis);
         </Formik>
         </ImageBackground>
         
+
+       
       </View>
   );
 }
-
 HomeScreen.navigationOptions = {
   header: null,
 };
@@ -376,7 +353,7 @@ const styles = StyleSheet.create({
     marginTop: 28,
    width: '80%',
    alignSelf: "center",
-   height: 150,
+   height: 50,
   justifyContent: "flex-start"
   },
   button: {
