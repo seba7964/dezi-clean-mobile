@@ -56,15 +56,15 @@ formData.append('longitude', longitude);
 formData.append('prezime', values.prezime);
 formData.append('opis', values.opis);
 
- fetch("https://896c3c2a.ngrok.io/api/FileUploading/UploadFile", {
+fetch("http://60a41c0b.ngrok.io/api/FileUploading/UploadFile", {
   method: 'POST',
   body: formData,
   header: {
     'content-type': 'multipart/form-data',
-    
   },
-  
-}).catch(error => console.log(error))
+}).then(res => res.json())
+.catch(error => console.log(error))
+.then(res => console.log('Sucess:', res))
   }
 
   async function _pickImage(handleChange) {
