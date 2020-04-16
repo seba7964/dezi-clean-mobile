@@ -50,13 +50,14 @@ let type = match ? `image/${match[1]}` : `image`;
 let formData = new FormData();
 // Assume "photo" is the name of the form field the server expects
 formData.append('photo', { uri: localUri, name: filename, type: type});
+formData.append('naslov',values.naslov);
 formData.append('ime', values.ime);
 formData.append('latitude', latitude);
 formData.append('longitude', longitude);
 formData.append('prezime', values.prezime);
 formData.append('opis', values.opis);
 
-fetch("http://60a41c0b.ngrok.io/api/FileUploading/UploadFile", {
+fetch("http://5cdb0085.ngrok.io/api/FileUploading/UploadFile", {
   method: 'POST',
   body: formData,
   header: {
@@ -149,6 +150,13 @@ async function findCoordinates (handleChange) {
           {({ handleChange, handleSubmit, values}) => (
             <View>
               <TextInput
+                style={[styles.textinputnaslov]}
+                onChangeText={handleChange('naslov')}
+                value={values.naslov}
+                label="Unesite naslov"
+                placeholder="npr. ležište komaraca"
+              />
+              <TextInput
                 style={[styles.textinputime]}
                 onChangeText={handleChange('ime')}
                 value={values.ime}
@@ -165,7 +173,7 @@ async function findCoordinates (handleChange) {
               <TextInput
                 style={[styles.textinputopis]}
                 multiline={true}
-                numberOfLines={4}
+                //numberOfLines={4}
                 onChangeText={handleChange('opis')}
                 value={values.opis}
                 label="Opišite problem"
@@ -334,6 +342,14 @@ const styles = StyleSheet.create({
    //width: '80%',
    //alignSelf: "center"
   },
+  textinputnaslov: {
+    paddingTop: 0,
+   padding: 0,
+   marginTop: 5,
+   width: '80%',
+   alignSelf: "center",
+   color:'red'
+  },
   textinputime: {
     paddingTop: 0,
    padding: 0,
@@ -353,7 +369,7 @@ const styles = StyleSheet.create({
     marginTop: 28,
    width: '80%',
    alignSelf: "center",
-   height: 50,
+  // height: 80,
   justifyContent: "flex-start"
   },
   button: {

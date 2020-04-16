@@ -57,7 +57,7 @@ componentDidMount () {
     <MapView.Marker 
       coordinate={marker.coordinates}
       title={marker.title}
-      pinColor='#000000'
+      pinColor='#000000' 
     >
     
     </MapView.Marker>
