@@ -11,17 +11,19 @@ state = {
   markers: []
 }
 
+
+
 componentDidMount () {
   console.log(this.findCoordinates());
 } 
 
     findCoordinates = async() => {
       try {
-        let response = await fetch('https://01daf74a.ngrok.io/api/GetLocation/Location');
+        let response = await fetch('http://5cdb0085.ngrok.io/api/GetLocation/Location');
         let responseJson = await response.json();
         this.state.markers = responseJson;
         console.log(this.state.markers);
-        this.setState({markers: this.state.markers}) 
+        this.setState({markers: this.state.markers})
       } catch (error) {
         console.error(error);
       }
@@ -55,6 +57,7 @@ componentDidMount () {
     <MapView.Marker 
       coordinate={marker.coordinates}
       title={marker.title}
+      pinColor='#000000'
     >
     
     </MapView.Marker>
