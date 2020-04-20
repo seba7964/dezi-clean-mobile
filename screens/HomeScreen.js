@@ -3,17 +3,28 @@ import * as ImagePicker from 'expo-image-picker';
 import { Formik } from 'formik';
 import { Button, TextInput } from 'react-native-paper';
 import * as React from 'react';
-import { Alert, Keyboard, Image, View, StyleSheet, ImageBackground, Text , TouchableOpacity } from 'react-native';
+import { Alert, Keyboard, Image, View, StyleSheet, ImageBackground, Text , Picker, TouchableOpacity, PickerIOS } from 'react-native';
 import { Header } from 'react-native-elements';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import SearchableDropdown from 'react-native-searchable-dropdown';
 
 
 const initialValues = {
   //ime: '',
   image: '',
-  location: ''
+  location: '',
+  kategorija: ''
 }
+
+
+var items = [
+  //name key is must.It is to show the text in front
+  { id: 1, name: 'Dezinfekcija' },
+  { id: 2, name: 'Dezinsekcija' },
+  { id: 3, name: 'Deratizacija' },
+];
+
 
 export default function HomeScreen() {
   askPermissionsAsyncCamera = async () => {
@@ -37,9 +48,11 @@ for (var x in values) {
 }
 let localUri = values[index[0]];
 let lokacijajson = values[index[1]];
-let filename = localUri.split('/').pop();
+let kategorija = values[index[2]];
 
+let filename = localUri.split('/').pop();
 let lokacija = JSON.parse(lokacijajson);
+
 var latitude = lokacija.coords.latitude;
 var longitude = lokacija.coords.longitude;
 // Infer the type of the image
@@ -56,8 +69,9 @@ formData.append('latitude', latitude);
 formData.append('longitude', longitude);
 formData.append('prezime', values.prezime);
 formData.append('opis', values.opis);
+formData.append('kategorija', kategorija.name);
 
-fetch("http://5cdb0085.ngrok.io/api/FileUploading/UploadFile", {
+fetch("http://89f3462f.ngrok.io/api/FileUploading/UploadFile", {
   method: 'POST',
   body: formData,
   header: {
@@ -149,12 +163,74 @@ async function findCoordinates (handleChange) {
           onSubmit={onSubmit.bind(this)}>
           {({ handleChange, handleSubmit, values}) => (
             <View>
+
+
+
+
+    <SearchableDropdown
+          onTextChange={text => console.log(text)}
+         // onChangeText={handleChange('kategorija')}
+          //On text change listner on the searchable input
+          onItemSelect={handleChange('kategorija')}
+         // onItemSelect={item => alert(JSON.stringify(item))}
+          //value={items.name}
+          //onItemSelect called after the selection from the dropdown
+          containerStyle={{ padding: 10, width: '85%', alignSelf: "center"}}
+          //suggestion container style
+          textInputStyle={{
+            //inserted text style
+            padding: 12,
+            borderWidth: 1,
+            borderColor: '#ccc',
+            backgroundColor: '#FAF7F6',
+          }}
+          itemStyle={{
+            //single dropdown item style
+            padding: 10,
+            marginTop: 2,
+            backgroundColor: '#FAF9F8',
+            borderColor: '#bbb',
+            borderWidth: 1,
+          }}
+          itemTextStyle={{
+            //single dropdown item's text style
+            color: '#222',
+          }}
+          itemsContainerStyle={{
+            //items container style you can pass maxHeight
+            //to restrict the items dropdown hieght
+            maxHeight: '100%',
+            
+          }}
+          items={items}
+          //mapping of item array
+          defaultIndex={1}
+          //default selected item index
+          placeholder="Odaberite kategoriju"
+          //place holder for the search input
+          resetValue={false}
+          //reset textInput Value with true and false state
+          underlineColorAndroid="transparent"
+          //To remove the underline from the android input
+        />
+
+
+
               <TextInput
                 style={[styles.textinputnaslov]}
                 onChangeText={handleChange('naslov')}
                 value={values.naslov}
                 label="Unesite naslov"
                 placeholder="npr. ležište komaraca"
+              />
+                            <TextInput
+                style={[styles.textinputopis]}
+                multiline={true}
+                //numberOfLines={4}
+                onChangeText={handleChange('opis')}
+                value={values.opis}
+                label="Opišite problem"
+                placeholder="npr. Ovo je mjesto zagađenja"
               />
               <TextInput
                 style={[styles.textinputime]}
@@ -170,15 +246,7 @@ async function findCoordinates (handleChange) {
                 label="Unesite prezime"
                 placeholder="npr. Perić"
               />
-              <TextInput
-                style={[styles.textinputopis]}
-                multiline={true}
-                //numberOfLines={4}
-                onChangeText={handleChange('opis')}
-                value={values.opis}
-                label="Opišite problem"
-                placeholder="npr. Ovo je mjesto zagađenja"
-              />
+
               <Button
                 icon="add-a-photo" mode="contained" style={styles.button}
                 onPress={() => {_pickImage(handleChange('image')), findCoordinates(handleChange('location'))}}
@@ -238,94 +306,6 @@ function handleHelpPress() {
   );
 }
 
-/*const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
-}); */
 
 const styles = StyleSheet.create({
   container: {
@@ -343,37 +323,37 @@ const styles = StyleSheet.create({
    //alignSelf: "center"
   },
   textinputnaslov: {
-    paddingTop: 0,
-   padding: 0,
-   marginTop: 5,
+   // paddingTop: 5,
+  // padding: 0,
+   marginTop: 0,
    width: '80%',
    alignSelf: "center",
-   color:'red'
-  },
-  textinputime: {
-    paddingTop: 0,
-   padding: 0,
-   marginTop: 15,
-   width: '80%',
-   alignSelf: "center",
-   color:'red'
-  },
-  textinputprezime: {
-    paddingTop: 0,
-   padding: 0,
-   marginTop: 25,
-   width: '80%',
-   alignSelf: "center"
+   textDecorationColor:"red",
   },
   textinputopis: {
-    marginTop: 28,
+    marginTop: 10,
    width: '80%',
    alignSelf: "center",
   // height: 80,
   justifyContent: "flex-start"
   },
+  textinputime: {
+  //  paddingTop: 0,
+  // padding: 0,
+   marginTop: 10,
+   width: '80%',
+   alignSelf: "center",
+   color:'red'
+  },
+  textinputprezime: {
+  //  paddingTop: 0,
+ //  padding: 0,
+   marginTop: 10,
+   width: '80%',
+   alignSelf: "center"
+  },
   button: {
-    marginTop: 15,
+    marginTop: 10,
     width: '80%',
     alignSelf: "center",
     backgroundColor: '#32CD32',
@@ -381,9 +361,10 @@ const styles = StyleSheet.create({
     textDecorationColor: 'red'
   },
   imagesubmit: {
+    marginTop: 10,
     width: '80%',
     height:100,
     alignSelf: "center",
-    marginTop: 10,
+    
   }
 });

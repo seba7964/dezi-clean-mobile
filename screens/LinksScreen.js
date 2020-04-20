@@ -19,7 +19,7 @@ componentDidMount () {
 
     findCoordinates = async() => {
       try {
-        let response = await fetch('http://5cdb0085.ngrok.io/api/GetLocation/Location');
+        let response = await fetch('http://89f3462f.ngrok.io/api/GetLocation/Location');
         let responseJson = await response.json();
         this.state.markers = responseJson;
         console.log(this.state.markers);

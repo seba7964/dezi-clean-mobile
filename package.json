@@ -29,6 +29,7 @@
     "react-native-elements": "^1.2.7",
     "react-native-maps": "^0.26.1",
     "react-native-paper": "^2.16.0",
+    "react-native-searchable-dropdown": "^1.1.1",
     "react-native-web": "^0.11.4",
     "react-navigation": "^3.11.0",
     "whatwg-fetch": "^3.0.0"
