@@ -3,9 +3,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { Formik } from 'formik';
 import { Button, TextInput } from 'react-native-paper';
 import * as React from 'react';
-import { Alert, Keyboard, Image, View, StyleSheet, ImageBackground, Text, Picker, TouchableOpacity, PickerIOS } from 'react-native';
+import { Image, View, StyleSheet, ImageBackground, Text, ScrollView } from 'react-native';
 import { Header } from 'react-native-elements';
-import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 
@@ -70,7 +69,7 @@ export default function HomeScreen() {
     formData.append('opis', values.opis);
     formData.append('kategorija', kategorija.name);
 
-    fetch("http://89f4cff6.ngrok.io/api/FileUploading/UploadFile", {
+    fetch("http://7ea9dda3.ngrok.io/api/FileUploading/UploadFile", {
       method: 'POST',
       body: formData,
       header: {
@@ -169,13 +168,15 @@ export default function HomeScreen() {
           onSubmit={onSubmit.bind(this)}
         >
           {({ handleChange, handleSubmit, values, resetForm, validateForm }) => (
-            <View>
+            <ScrollView
+            keyboardShouldPersistTaps={"always"}
+            >
               <SearchableDropdown
                 onTextChange={text => console.log(text)}
                 // onChangeText={handleChange('kategorija')}
                 //On text change listner on the searchable input
                 onItemSelect={handleChange('kategorija')}
-                // onItemSelect={item => alert(JSON.stringify(item))}
+                //onItemSelect={item => alert(JSON.stringify(item))}
                 //value={items.name}
                 //onItemSelect called after the selection from the dropdown
                 containerStyle={{ padding: 10, width: '85%', alignSelf: "center" }}
@@ -252,7 +253,7 @@ export default function HomeScreen() {
               {values.image && values.image.length > 0 ?
                 <Image source={{ uri: values.image }} style={styles.imagesubmit} /> : null}
               <Button onPress={handleSubmit} style={styles.button}><Text style={style = { color: '#fff' }}>Pošalji</Text></Button>
-            </View>
+            </ScrollView>
           )}
         </Formik>
       </ImageBackground>
@@ -350,7 +351,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: '#32CD32',
     color: 'red',
-    textDecorationColor: 'red'
+    marginBottom: 10
   },
   imagesubmit: {
     marginTop: 10,

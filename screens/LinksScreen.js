@@ -21,7 +21,7 @@ export default class LinksScreen extends React.Component {
 
   findCoordinates = async () => {
     try {
-      let response = await fetch('http://89f4cff6.ngrok.io/api/GetLocation/Location');
+      let response = await fetch('http://7ea9dda3.ngrok.io/api/GetLocation/Location');
       let responseJson = await response.json();
       this.state.markers = responseJson;
       console.log(this.state.markers);
@@ -97,10 +97,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   legend: {
-    top: -8,
-    right: -25,
-    height: 80,
-    width: 200,
+    top: -34,
+    right: -32,
+    //top: 0,
+    //right: 0,
+    height: 135,
+    width: 250,
     flexDirection: 'row',
     resizeMode: 'contain'
   }
