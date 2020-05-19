@@ -69,7 +69,7 @@ export default function HomeScreen() {
     formData.append('opis', values.opis);
     formData.append('kategorija', kategorija.name);
 
-    fetch("http://7ea9dda3.ngrok.io/api/FileUploading/UploadFile", {
+    fetch("http://dbdfc7be.ngrok.io/api/FileUploading/UploadFile", {
       method: 'POST',
       body: formData,
       header: {

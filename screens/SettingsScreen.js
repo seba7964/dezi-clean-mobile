@@ -20,6 +20,7 @@ class ExpandableItemComponent extends Component {
     super();
     this.state = {
       layoutHeight: 0,
+      //isExpanded: true,
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -43,6 +44,20 @@ class ExpandableItemComponent extends Component {
     }
     return false;
   }
+
+  doNothing() {
+    return false;
+  }
+
+  checkFunction(bool) {
+    //debugger;
+    if(bool == true) {
+      this.props.onClickFunction
+    }
+    else {
+      this.doNothing
+    }
+  }
   //ovdje mi je html
   render() {
     return (
@@ -51,7 +66,9 @@ class ExpandableItemComponent extends Component {
         {/*Header of the Expandable List Item*/}
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={this.props.onClickFunction}
+          //onPress={this.props.onClickFunction}
+         //onPress={this.checkFunction(this.props.item.isExpanded)}
+         onPress={this.props.item.canBeExpanded ? this.props.onClickFunction : this.doNothing}
           style={styles.header}>
           <Text style={styles.headerText}>{this.props.item.category_name}</Text>
         </TouchableOpacity>
@@ -104,6 +121,7 @@ export default class SettingsScreen extends React.Component {
     this.setState(() => {
       return {
         listDataSource: array,
+        //isExpanded: true,
       };
     });
   };
@@ -160,7 +178,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     borderRadius: 10,
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '500',
   },
   /* separator: {
@@ -171,7 +189,7 @@ const styles = StyleSheet.create({
      marginRight: 16,
    }, */
   text: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#606070',
     padding: 10,
     //color: 'blue',
@@ -191,78 +209,45 @@ const styles = StyleSheet.create({
 //You can also use dynamic data by calling webservice
 const CONTENT = [
   {
-    isExpanded: false,
-    category_name: 'Kolko često pijete pivo?',
-    subcategory: [{ id: 1, val: 'Često' }],
+    isExpanded: true,
+    canBeExpanded : true,
+    category_name: 'Što vi možete napraviti kako bi populacija komaraca bila što manja?',
+    subcategory: [{ id: 1, val: '1. UKLONITE ili ISPRAZNITE VODU iz svih predmeta (npr. bačve, kante, prazne lončanice te podlošci za lončanice, auto-gume, barke i sl.) na javnim površinama, u dvorištima, vrtovima, na balkonima ili terasama!' }, { id: 2, val: '2. Auto-gume (pneumatske gume), nakon što ste ih ispraznili od vode, SLOŽITE u piramide i PRESLOŽITE ih svakih 15 dana te ih POKRIJTE nepropusnim pokrivalom na način da se onemogući nakupljanje vode!' },  { id: 3, val: '3. ODRŽAVAJTE UREDNIM vaše vrtove i dvorišta, tj. pokosite travu i uklonite suvišno grmlje! Vodu za zalijevanje vrtova trebate redovito MIJENJATI (trošiti) - NE SMIJE stajati dulje od 5 dana u posudi za zalijevanje!' },  { id: 4, val: '4. Rezerve vode HERMETIČKI ZATVORITE poklopcima ili na neki drugi prihvatljiv način!' },  { id: 5, val: '5. ZATRPAJTE jame, bare i slične površine kako se ne bi zadržavala kišnica ili drugi izvori vode!' },  { id: 6, val: '6. Sve spremnike i ostale materijale (npr. plastične folije) ODLAŽITE na način da se IZBJEGNE NAKUPLJANJE kišnice!' },  { id: 7, val: '7. Na GROBLJIMA vaze za cvijeće NAPUNITE vlažnim pijeskom, a sve druge posude koje povremeno koristite za cvijeće i zalijevanje MORATE odlagati na način da se izbjegne nakupljanje vode u slučaju kiše!' }],    
   },
   {
-    isExpanded: false,
-    category_name: 'Item 2',
-    subcategory: [{ id: 4, val: 'Sub Cat 4' }, { id: 5, val: 'Sub Cat 5' }],
+    isExpanded: true,
+    canBeExpanded : true,
+    category_name: 'Zašto o komarcima moramo razmišljati već danas?',
+    subcategory: [{ id: 8, val: 'Zato jer komarci koji su u ožujku i travnju bezazlene ličinke, dolaskom toplijih dana (od svibnja i lipnja) postaju nesnosne leteće krvopije koje:' }, { id: 9, val: '→ mogu prenositi opasne zarazne bolesti' },{ id: 10, val: '→ ubodima uzrokuju značajne kožne probleme' },{ id: 11, val: '→ uzrokuju velike smetnje pri normalnom odvijanju čovjekovih aktivnosti' },{ id: 12, val: '→ kada ih je puno uzrokuju kolektivno nezadovoljstvo građana i turista' }],
   },
   {
-    isExpanded: false,
-    category_name: 'Item 3',
-    subcategory: [{ id: 7, val: 'Sub Cat 7' }, { id: 9, val: 'Sub Cat 9' }],
+    isExpanded: true,
+    canBeExpanded : true,
+    category_name: 'Kako se komarci legu u vodama stajačicama?',
+    subcategory: [{ id: 20, val: '→ polažu jajašca u vode stajaćice ' }, { id: 21, val: '→ u vodi se iz jajašca razvijaju ličinke komaraca ' },{ id: 22, val: '→ iz ličinki nastaje kukuljica ' },{ id: 23, val: '→ iz kukuljica izlijeću odrasli komarci' },],
   },
   {
-    isExpanded: false,
-    category_name: 'Item 4',
-    subcategory: [{ id: 10, val: 'Sub Cat 10' }, { id: 12, val: 'Sub Cat 2' }],
+    isExpanded: true,
+    canBeExpanded : true,
+    category_name: 'Koje su vrste i brojnost komaraca ovisno o vrsti i veličini legla?',
+    subcategory: [{ id: 30, val: 'STANIŠTA (legla) JAJAŠACA, LIČINKI I KUKULJICA' }, { id: 31, val: '→ vode stajaćice, bare, lokve, kanali, potoci, poplavne livade, šikare, šume, bačve s vodom, vaze, auto-gume, odbačene kante i kućanski aparati, podrumi stambenih zgrada, šahtovi, septičke jame te sva druga mjesta i predmeti na kojima voda poslije kiše stoji duže od 5 dana' },{ id: 33, val: 'STANIŠTA (legla) ODRASLIH KOMARACA' },{ id: 34, val: '→ livade, šume, nisko raslinje, krošnja manjeg drveća, grmlje, živica, podrumi stambenih zgrada, napuštene zgrade, neodržavane javne površine i sl.' },{ id: 35, val: ' Kako su komarci ovisni o mikroklimi njihova se aktivnost odvija uglavnom u doba noći, predvečerje ili u rano jutro, kada je izraženija vlažnost zraka i niža temperatura.' },{ id: 36, val: 'Izuzetak čini agresivna vrsta u Republici Hrvatskoj - azijski tigrasti komarac (Aedes albopictus) koja je ishodišno vrsta vlažnih šuma (danas udomaćena u gradovima) i koja bode tijekom čitavog dana.' },],
   },
   {
-    isExpanded: false,
-    category_name: 'Item 5',
-    subcategory: [{ id: 13, val: 'Sub Cat 13' }, { id: 15, val: 'Sub Cat 5' }],
+    isExpanded: true,
+    canBeExpanded : true,
+    category_name: 'Zašto je suzbijanje odraslih komaraca kratkoročnog učinka tek kada počnu letjeti?',
+    subcategory: [{ id: 40, val: '→ odrasli komarci zaposjedaju puno veća područja nego kada su bili u obliku jajašca, ličinke ili kukuljice' }, { id: 41, val: '→ tijekom suzbijanja mnogi odrasli komarci su skriveni, tj. zaštićeni u zelenoj vegetaciji' }, { id: 42, val: '→ ubrzo nakon akcija suzbijanja na jednom području, drugi komarci dolaze iz područja u kojima nije provedeno suzbijanje' }, { id: 43, val: '→ insekticid ne djeluje na zaustavljanje razvoja ličinki pa za nekoliko dana dolazi po invazije nove generacije odraslih komaraca na tretiranom području' }],
   },
   {
-    isExpanded: false,
-    category_name: 'Item 6',
-    subcategory: [{ id: 17, val: 'Sub Cat 17' }, { id: 18, val: 'Sub Cat 8' }],
+    isExpanded: true,
+    canBeExpanded : true,
+    category_name: 'Kako možemo sami smanjiti pojavu glodavaca u našoj okolini?',
+    subcategory: [{ id: 50, val: 'Ne odlažite kućni i ostali organski otpad u vrećicama na javnim površinama nego isključivo u kantama ili kontejnerima kako bi onemogućili pristup i hranjenje štetnih glodavaca!' }, { id: 51, val: '1.	Građevinski i svaki drugi slični otpad odlažite na za to predviđenim mjestima za deponiranje takve vrste otpada!' }, { id: 52, val: '2.	Ne ostavljajte hranu za kućne ljubimce i domaće životinje u vrtovima te niti na drugim javnim površinama!' }, { id: 53, val: '3. Temelji objekata u kojima živite i radite moraju biti građevinski pravilno i kvalitetno izrađeni!' }, { id: 54, val: '4.	Zatvarajte sve ulazne otvore dovodnih i odvodnih instalacija u vašim objektima!' }, { id: 55, val: '5. Sva ulazna vrata trebaju tijesno prianjati uz dovratnike (štokove) kako ne bi bilo suvišnih pukotina kroz koje se mogu provlačiti štetni glodavaci!' }, { id: 56, val: '6.	Ugradite zaštitne mreže na prozore, odzračnike i ostale otvore na objektu te ispravne sifone i prepreke u kanalizacijskom sustavu!' }, { id: 57, val: '7.	Onemogućite kapanje vode iz žljebova te drugih vrsta cijevi i sprječite zadržavanje vode u lokvama!' }, { id: 58, val: '8.	Ako skladištite hranu činite to na način da onemogućite pristup štetnim glodavcima te povremeno kontrolirajte i preslagujte uskladištenu hranu!' }, { id: 59, val: '9.	Štakori i miševi obožavaju grmlje i puzajuće biljke oko objekata u kojima živite i radite pa je nužno potrebno da kontinuirano održavate urednim Vaše vrtove te sve javne površine!' }],
   },
-  {
-    isExpanded: false,
+  /*{
+    isExpanded: true,
+    canBeExpanded : true,
     category_name: 'Item 7',
     subcategory: [{ id: 20, val: 'Sub Cat 20' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 8',
-    subcategory: [{ id: 22, val: 'Sub Cat 22' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 9',
-    subcategory: [{ id: 26, val: 'Sub Cat 26' }, { id: 27, val: 'Sub Cat 7' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 10',
-    subcategory: [{ id: 28, val: 'Sub Cat 28' }, { id: 30, val: 'Sub Cat 0' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 11',
-    subcategory: [{ id: 31, val: 'Sub Cat 31' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 12',
-    subcategory: [{ id: 34, val: 'Sub Cat 34' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 13',
-    subcategory: [{ id: 38, val: 'Sub Cat 38' }, { id: 39, val: 'Sub Cat 9' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 14',
-    subcategory: [{ id: 40, val: 'Sub Cat 40' }, { id: 42, val: 'Sub Cat 2' }],
-  },
-  {
-    isExpanded: false,
-    category_name: 'Item 15',
-    subcategory: [{ id: 43, val: 'Sub Cat 43' }, { id: 44, val: 'Sub Cat 44' }],
-  },
+  }, */
 ];

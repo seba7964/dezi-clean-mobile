@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, Text, View, Dimensions, Image } from 'react-native';
 import MapView from 'react-native-maps';
 import { Header } from 'react-native-elements';
+import { AuthSession } from 'expo';
 
 export default class LinksScreen extends React.Component {
   //export default function LinksScreen() {
@@ -21,7 +22,7 @@ export default class LinksScreen extends React.Component {
 
   findCoordinates = async () => {
     try {
-      let response = await fetch('http://7ea9dda3.ngrok.io/api/GetLocation/Location');
+      let response = await fetch('http://dbdfc7be.ngrok.io/api/GetLocation/Location');
       let responseJson = await response.json();
       this.state.markers = responseJson;
       console.log(this.state.markers);
@@ -64,9 +65,9 @@ export default class LinksScreen extends React.Component {
             </React.Fragment>
           ))}
         </MapView>
-        <View style={styles.legendContainer}>
+        
           <Image source={require('../assets/images/legenda2.png')} style={styles.legend} />
-        </View>
+        
       </View>
     );
   }
@@ -97,14 +98,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   legend: {
-    top: -34,
-    right: -32,
+    bottom: 0,
+    right: 0,
+    margin: 'auto',
     //top: 0,
     //right: 0,
-    height: 135,
-    width: 250,
-    flexDirection: 'row',
-    resizeMode: 'contain'
+    height: 125,
+    width: 125,
+    flexDirection: 'column',
+   // width: '100%',
+   // flexDirection: 'row',
+   // resizeMode: 'contain',
+    position: "absolute"
   }
 });
 
