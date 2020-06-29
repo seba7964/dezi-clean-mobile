@@ -3,7 +3,7 @@
     "name": "dezi-clean",
     "slug": "dezi-clean-mobile",
     "privacy": "public",
-    "sdkVersion": "34.0.0",
+    "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
       "android",
@@ -28,11 +28,11 @@
         "infoPlist": {
         "NSLocationAlwaysUsageDescription": "Allow location",
         "NSCameraUsageDescription": "This app uses the camera to scan barcodes on event tickets.",
-        "NSAppTransportSecurity" : "Allow internet",
-        "NSAllowsArbitraryLoads" : "Allow internet",
-        "NSExceptionDomains" : "allow internet",
-        "NSExceptionAllowsInsecureHTTPLoads" : "allow internet",
-        "NSIncludesSubdomains" : "allow interet"
+        "NSAppTransportSecurity" : "Allow HTTP connection",
+        "NSAllowsArbitraryLoads" : "A Boolean value indicating whether App Transport Security restrictions are disabled for all network connections",
+        "NSExceptionDomains" : "Custom configurations for App Transport Security named domains.",
+        "NSExceptionAllowsInsecureHTTPLoads" : "Custom configurations for App Transport Security named domains.",
+        "NSIncludesSubdomains" : "Custom configurations for App Transport Security named domains."
       }
     }
   }

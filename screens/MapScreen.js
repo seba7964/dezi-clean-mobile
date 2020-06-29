@@ -3,6 +3,9 @@ import { ScrollView, StyleSheet, Text, View, Dimensions, Image } from 'react-nat
 import MapView from 'react-native-maps';
 import { Header } from 'react-native-elements';
 import { AuthSession } from 'expo';
+import Constants from 'expo-constants';
+
+//const deviceId = Expo.Constants.deviceId;
 
 export default class LinksScreen extends React.Component {
   //export default function LinksScreen() {
@@ -11,18 +14,17 @@ export default class LinksScreen extends React.Component {
     markers: []
   }
 
+ 
+
   componentDidMount() {
     this.findCoordinates().then(setInterval(() => {
       this.findCoordinates();
     }, 100000))
-    /* setInterval(() => {
-       this.findCoordinates();
-     }, 100000); */
   }
 
   findCoordinates = async () => {
     try {
-      let response = await fetch('http://dbdfc7be.ngrok.io/api/GetLocation/Location');
+      let response = await fetch('https://735170e247e4.ngrok.io/api/GetLocation/Location');
       let responseJson = await response.json();
       this.state.markers = responseJson;
       console.log(this.state.markers);
@@ -65,9 +67,7 @@ export default class LinksScreen extends React.Component {
             </React.Fragment>
           ))}
         </MapView>
-        
           <Image source={require('../assets/images/legenda2.png')} style={styles.legend} />
-        
       </View>
     );
   }

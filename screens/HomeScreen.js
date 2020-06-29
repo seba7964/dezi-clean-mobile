@@ -36,8 +36,6 @@ export default function HomeScreen() {
   function onSubmit(values, { resetForm }) {
     let dataError = validateForm(values)
     if (dataError != 0) return;
-
-
     var index = [];
 
     // build the index
@@ -68,8 +66,7 @@ export default function HomeScreen() {
     formData.append('prezime', values.prezime);
     formData.append('opis', values.opis);
     formData.append('kategorija', kategorija.name);
-
-    fetch("http://dbdfc7be.ngrok.io/api/FileUploading/UploadFile", {
+    fetch("http://4f9ff3f0bd29.ngrok.io", {
       method: 'POST',
       body: formData,
       header: {

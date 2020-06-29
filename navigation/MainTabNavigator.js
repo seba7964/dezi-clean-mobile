@@ -4,8 +4,8 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import LinksScreen from '../screens/MapScreen';
+import SettingsScreen from '../screens/FAQScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -59,9 +59,9 @@ const SettingsStack = createStackNavigator(
 );
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Postavke',
+  tabBarLabel: 'FAQ',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-settings' : 'md-options'} />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'md-information-circle-outline' : 'md-information-circle-outline'} />
   ),
 };
 
